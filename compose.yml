@@ -1,0 +1,40 @@
+services:
+  mariadb-gilman:
+    build:
+      context: .
+      dockerfile: mariadb.Containerfile
+    container_name: mariadb-gilman
+    environment:
+      MYSQL_ROOT_PASSWORD: 24434
+      MYSQL_DATABASE: museum_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql:Z
+
+  php-apache-gilman:
+    build:
+      context: .
+      dockerfile: php-apache.Containerfile
+    container_name: php-apache-gilman
+    ports:
+      - "8001:80"
+    volumes:
+      - ./app:/var/www/html:Z
+    depends_on:
+      - mariadb-gilman
+
+  phpmyadmin-gilman:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-gilman
+    restart: always
+    ports:
+      - "8002:80"
+    environment:
+      PMA_HOST: mariadb-gilman
+      MYSQL_ROOT_PASSWORD: 24434
+    depends_on:
+      - mariadb-gilman
+
+volumes:
+  mariadb-data: {}
