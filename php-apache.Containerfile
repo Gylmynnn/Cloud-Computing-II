@@ -1,10 +1,18 @@
-FROM php:8.2-apache
+FROM php:8.4-apache
 
-RUN apt-get update && \
-    apt-get install -y nano && \
-    docker-php-ext-install mysqli && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN a2enmod rewrite
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y nano
+RUN mkdir /apps-init
+COPY app/* /apps-init
 
-EXPOSE 80
+#script entrypoint
+COPY podman-entrypoint.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/podman-entrypoint.sh
+
+ENTRYPOINT ["podman-entrypoint.sh"]
+CMD ["apache2-foreground"]
+
+
+
