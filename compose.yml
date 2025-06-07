@@ -1,8 +1,9 @@
 services:
   mariadb-gilman:
     build:
-      context: .
+      context: files
       dockerfile: mariadb.Containerfile
+    restart: always
     container_name: mariadb-gilman
     environment:
       MYSQL_ROOT_PASSWORD: 24434
@@ -14,22 +15,22 @@ services:
 
   php-apache-gilman:
     build:
-      context: .
+      context: files
       dockerfile: php-apache.Containerfile
     container_name: php-apache-gilman
     ports:
-      - "8001:80"
+      - "8000:80"
     volumes:
       - ./app:/var/www/html:Z
     depends_on:
       - mariadb-gilman
 
   phpmyadmin-gilman:
-    image: phpmyadmin/phpmyadmin
+    image: docker.io/library/phpmyadmin:latest
     container_name: phpmyadmin-gilman
     restart: always
     ports:
-      - "8002:80"
+      - "8001:80"
     environment:
       PMA_HOST: mariadb-gilman
       MYSQL_ROOT_PASSWORD: 24434
