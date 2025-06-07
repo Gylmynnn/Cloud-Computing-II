@@ -1,3 +1,3 @@
-FROM mariadb:10.11
+FROM docker.io/library/mariadb:latest
 
-COPY ./migration/ /docker-entrypoint-initdb.d/
+COPY migration/* /docker-entrypoint-initdb.d/
