@@ -7,3 +7,9 @@ techstack : {
     container : "podman"
 }
 ```
+
+### redhat virtual machine use 
+```
+1.podman login -u (username docker hub) docker.io
+2.password : (accesstoken docker hub)
+```
