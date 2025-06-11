@@ -1,7 +1,7 @@
 services:
   mariadb-gilman:
     build:
-      context: files
+      context: .
       dockerfile: mariadb.Containerfile
     restart: always
     container_name: mariadb-gilman
@@ -15,7 +15,7 @@ services:
 
   php-apache-gilman:
     build:
-      context: files
+      context: .
       dockerfile: php-apache.Containerfile
     container_name: php-apache-gilman
     ports:
